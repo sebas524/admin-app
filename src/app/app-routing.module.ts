@@ -1,55 +1,29 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
-import { LoginComponent } from './auth/login/login.component';
-import { RegisterComponent } from './auth/register/register.component';
-import { DashboardComponent } from './pages/dashboard/dashboard.component';
-import { Graphic1Component } from './pages/graphic1/graphic1.component';
-import { NoPageFoundComponent } from './pages/no-page-found/no-page-found.component';
-import { PagesComponent } from './pages/pages.component';
-import { ProgressComponent } from './pages/progress/progress.component';
+import { NoPageFoundComponent } from './no-page-found/no-page-found.component';
 
 const routes: Routes = [
   {
-    path: '',
-    component: PagesComponent,
-    children: [
-      {
-        path: 'dashboard',
-        component: DashboardComponent,
-      },
-      {
-        path: 'progress',
-        component: ProgressComponent,
-      },
-      {
-        path: 'graphic1',
-        component: Graphic1Component,
-      },
-      {
-        path: '',
-        redirectTo: '/dashboard',
-        pathMatch: 'full',
-      },
-    ],
+    path: 'auth',
+    loadChildren: () => import('./auth/auth.module').then((m) => m.AuthModule),
+  },
+  {
+    path: 'main',
+    loadChildren: () =>
+      import('./pages/pages.module').then((m) => m.PagesModule),
   },
 
   {
-    path: 'login',
-    component: LoginComponent,
+    path: '404',
+    component: NoPageFoundComponent,
   },
-  {
-    path: 'register',
-    component: RegisterComponent,
-  },
-
   {
     path: '**',
-    component: NoPageFoundComponent,
+    redirectTo: '404',
   },
 ];
 
 @NgModule({
-  declarations: [],
   imports: [RouterModule.forRoot(routes)],
   exports: [RouterModule],
 })
